@@ -1,0 +1,132 @@
+.App {
+  text-align: center;
+  position: relative;
+  font-family:serif;
+  background: url("/djup-rymd-farger.jpg") no-repeat; 
+  min-height: calc(100vh);
+  background-size: 100%;
+}
+
+.side-color{
+  background-color:rgba(193, 122, 235, 0.644);
+  margin: 0;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.Login {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+form{
+  width: 100%;
+  display: flex;
+}
+
+.myButton {
+  color: #8e5996;
+  margin-left: 8px;
+  font-size: 20px;
+  height: 40px;
+  border-radius: 7px;
+}
+
+.myError{
+color: #ca1552;
+margin-left: 8px;
+font-size: 18px;
+border-radius: 50%;
+}
+
+.myInput{
+  border-radius: 2px;
+  font-size: 20px;
+  height: 35px;
+}
+
+.logOut{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 25px;
+  color:#8e5996;
+  border-radius: 8px;
+}
+
+.chatRoom{
+  background: url("/3D Vesmir.png"); 
+  min-height: calc(100vh);
+  background-size: 100%;
+}
+
+.chat-header{
+  position: relative;
+  width: 600px;
+  min-height: calc(80vh);
+  border-radius: 7px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.961);
+}
+
+.chat-container{
+  width: 550px;
+  height: 400px;
+}
+
+.color-head{
+  background-color: rgba(205, 162, 229, 0.931);
+  margin: 0;
+  font-size: 24px;
+  font-family:serif;
+  color: white;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px; 
+}
+
+.send-message{
+  font-size: 25px;
+  color:#8e5996;
+  border-radius: 8px;
+  margin: 7px;
+  width: 90px;
+  height: 45px;
+}
+
+.text{
+  margin:0;
+  color: white;
+  font-family: fantasy;
+  font-size: 27px;
+}
+
+.send-container{
+position: absolute;
+background-color: rgba(205, 162, 229, 0.931);
+bottom: 0;
+margin: 7px;
+border-radius: 5px;
+}
+
+.message-input{
+  margin-top: 7px;
+  border-radius: 2px;
+  font-size: 20px;
+  height: 45px;
+  width: 480px;
+}
+
+
