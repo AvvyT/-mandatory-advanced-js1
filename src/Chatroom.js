@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
-
 import io from 'socket.io-client';
-// Create SocketIO instance, connect
-const socket = io('http://ec2-13-53-66-202.eu-north-1.compute.amazonaws.com:3000');
+
+//const io = require("socket.io-client");
+let socket = null;
+
+class ChatMessages extends Component {
+    render() {
+        return (
+             <p>avvy..
+                 {this.props.chatInput}
+             </p>   
+       );
+    }
+}
 
 class ChatWindow extends Component {
     render() {
         return (
             <div className='chat-header'>
                 <h3 className='color-head'>Chat App</h3>
-                <form className="chat-input"
-                    onSubmit={this.props.submitHandler
-                    }>
+                <form className="chat-input">
                     <div className='chat-container'>
-
+                    <ChatMessages/>
                     </div><div className='send-container'
                     >
-                    <input 
-                        className='message-input'
-                        type="text"
-                        onChange={this.props.textChangeHandler} 
-                        value={this.props.chatInput}
-                        placeholder=" Write a message..."
-                        required />
-                     <button
-                        className='send-message'
-                        onClick={this.props}
-                        value="Send"
-                        data-test="submit"
-                    >Send
-                    </button> 
-                    </div>  
+                        <input
+                            className='message-input'
+                            type="text"
+                            onChange={this.props.textChangeHandler}
+                            value={this.props.chatInput}
+                            placeholder=" Write a message..."
+                            required />
+                        <button
+                            className='send-message'
+                            onClick={this.props.submitHandler}
+                            value="Send"
+                            data-test="submit"
+                        >Send
+                    </button>
+                    </div>
                 </form>
             </div>
         );
@@ -42,8 +50,8 @@ class UserInfo extends Component {
         super(props);
 
         this.state = {
-            username: '', text: '', inlogat: false, chatInput: '',
-            messages: [{
+            inlogat: false, chatInput: '',
+            messagesFech: [{
                 id: '',
                 username: '',
                 text: '',
@@ -54,10 +62,26 @@ class UserInfo extends Component {
         //this.socket = io(config.api).connect();
         this.textChangeHandler = this.textChangeHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     textChangeHandler(event) {
         this.setState({ chatInput: event.target.value });
+    }
+
+    onClick() {
+        socket.emit("message",
+            {
+                username: this.props.userName,
+                text: this.state.chatInput
+            },
+            (x) => {
+                this.setState({
+                    messagesFech: [...this.state.messagesFech, x.data.newMessage],
+                    chatInput: ""
+                });
+            }
+        );
     }
 
     submitHandler(event) {
@@ -69,11 +93,28 @@ class UserInfo extends Component {
         this.setState({ chatInput: '' });
     }
 
+    componentDidMount() {
+        // Create SocketIO instance, connect
+        socket = io("http://ec2-13-53-66-202.eu-north-1.compute.amazonaws.com:3000");
+
+        socket.on("messages", (messages) => {
+            this.setState({ messagesFech: [...messages] });
+        });
+        socket.on("new_message", (message) => {
+            this.setState({ messagesFech: [...this.state.messagesFech, message] });
+        });
+    }
+
+    componentWillUnmount() {
+        socket.disconnect();
+        socket = null;
+    }
+
     render() {
         return (
             <div className="App">
                 <header className="chatRoom" >
-                <br></br>
+                    <br></br>
                     <h1 className='text'
                     >
                         Hello {this.props.username}!
@@ -85,7 +126,8 @@ class UserInfo extends Component {
                         data-test="submit"
                     >Logout
                     </button>
-                    <ChatWindow />
+                    <ChatWindow onSend={this.submitHandler} />
+                    <ChatMessages messages={this.messagesFech} onSave={this.submitHandler}/>
                 </header>
             </div>
         );
