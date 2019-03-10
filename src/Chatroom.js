@@ -1,43 +1,84 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
+import ScrollToBottom from "react-scroll-to-bottom";
 
-//const io = require("socket.io-client");
-let socket = null;
+class ChatMessage extends Component {
 
-class ChatMessages extends Component {
+    time(milliseconds) {
+        return new Date(milliseconds).toLocaleString();
+    }
+
     render() {
+        //console.log(this.props.message);
+
+        const message = this.props.message;
+        let float = "float-left";
+        if (message.isMine === "true") {
+            float = "float-right";
+        }
+        let className = 'new-content ' + float;
+
         return (
-             <p>avvy..
-                 {this.props.chatInput}
-             </p>   
-       );
+            <div className={className}>
+                <p className="show-time">{this.time(message.timestamp)}</p>
+                <h3>{message.username}</h3>
+                <p>{message.content}</p>
+            </div>
+        );
     }
 }
 
 class ChatWindow extends Component {
+    constructor(props) {
+        super(props);
+        //console.log(this.props);
+        this.state = { chatInput: '' }
+
+        this.sendMessage = this.sendMessage.bind(this);
+        this.textChangeHandler = this.textChangeHandler.bind(this);
+    }
+
+    sendMessage(e) {
+        e.preventDefault();
+        // skicka in input-value till fun.
+        this.props.sendmessage(this.state.chatInput);
+        this.setState({ chatInput: '' });
+    }
+
+    textChangeHandler(e) {
+        // allt input-value sparas i state:chatInput
+        this.setState({ chatInput: e.target.value });
+    }
+
     render() {
+        console.log(this.props.messages);
+
         return (
             <div className='chat-header'>
                 <h3 className='color-head'>Chat App</h3>
-                <form className="chat-input">
-                    <div className='chat-container'>
-                    <ChatMessages/>
-                    </div><div className='send-container'
-                    >
+
+                <ScrollToBottom className='chat-container'>
+                    {
+                        // loppa igenom alla meddelanden o rendera ett chat-message för varje
+                        this.props.messages.map((item) => <ChatMessage key={item.id} message={item} />
+                        )}
+                </ScrollToBottom>
+
+                <form onSubmit={this.sendMessage}>
+                    <div className='send-container'>
                         <input
+                            minLength={1}
+                            maxLength={200}
                             className='message-input'
                             type="text"
-                            onChange={this.props.textChangeHandler}
-                            value={this.props.chatInput}
+                            onChange={this.textChangeHandler}
+                            value={this.state.chatInput}
                             placeholder=" Write a message..."
                             required />
-                        <button
+                        <input
                             className='send-message'
-                            onClick={this.props.submitHandler}
-                            value="Send"
-                            data-test="submit"
-                        >Send
-                    </button>
+                            type='submit'
+                            value='Send'
+                        />
                     </div>
                 </form>
             </div>
@@ -46,77 +87,13 @@ class ChatWindow extends Component {
 }
 
 class UserInfo extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            inlogat: false, chatInput: '',
-            messagesFech: [{
-                id: '',
-                username: '',
-                text: '',
-                timestamp: ''
-            }]
-        };
-        // Connect to the server
-        //this.socket = io(config.api).connect();
-        this.textChangeHandler = this.textChangeHandler.bind(this);
-        this.submitHandler = this.submitHandler.bind(this);
-        this.onClick = this.onClick.bind(this);
-    }
-
-    textChangeHandler(event) {
-        this.setState({ chatInput: event.target.value });
-    }
-
-    onClick() {
-        socket.emit("message",
-            {
-                username: this.props.userName,
-                text: this.state.chatInput
-            },
-            (x) => {
-                this.setState({
-                    messagesFech: [...this.state.messagesFech, x.data.newMessage],
-                    chatInput: ""
-                });
-            }
-        );
-    }
-
-    submitHandler(event) {
-        event.preventDefault();
-
-        // Call the onSend callback with the chatInput message
-        this.props.onSend(this.state.chatInput);
-        // Clear the input box
-        this.setState({ chatInput: '' });
-    }
-
-    componentDidMount() {
-        // Create SocketIO instance, connect
-        socket = io("http://ec2-13-53-66-202.eu-north-1.compute.amazonaws.com:3000");
-
-        socket.on("messages", (messages) => {
-            this.setState({ messagesFech: [...messages] });
-        });
-        socket.on("new_message", (message) => {
-            this.setState({ messagesFech: [...this.state.messagesFech, message] });
-        });
-    }
-
-    componentWillUnmount() {
-        socket.disconnect();
-        socket = null;
-    }
 
     render() {
         return (
             <div className="App">
                 <header className="chatRoom" >
                     <br></br>
-                    <h1 className='text'
-                    >
+                    <h1 className='text'>
                         Hello {this.props.username}!
                     </h1>
                     <button
@@ -126,8 +103,7 @@ class UserInfo extends Component {
                         data-test="submit"
                     >Logout
                     </button>
-                    <ChatWindow onSend={this.submitHandler} />
-                    <ChatMessages messages={this.messagesFech} onSave={this.submitHandler}/>
+                    <ChatWindow messages={this.props.messages} sendmessage={this.props.sendmessage} />
                 </header>
             </div>
         );

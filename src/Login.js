@@ -29,18 +29,15 @@ class Login extends Component {
 
     changeInput(event) {// lägg value från inputen
         this.setState({ username: event.target.value });
-    };
+    }
 
     render() {
         return (
             <div className="Login">
                 <header className="text-header">
                     <h1 className="page-name">Login</h1>
-                </header>
-                <main>
-                    <form onSubmit={this.handleSubmit}>
-
-                        {this.state.error && <h3 data-test="error"
+                    {this.state.error && <h3 data-test="error"
+                            className='error-text'
                             onClick={this.dismissError}
                         >
                             {this.state.error}
@@ -51,7 +48,11 @@ class Login extends Component {
                             </button>
                         </h3>
                         }
-
+                </header>
+                
+                    <form className='form-style'
+                    onSubmit={this.handleSubmit}
+                    >
                         <label
                         >User Name <input type="text"
                                 placeholder=" Write a username!!"
@@ -69,8 +70,6 @@ class Login extends Component {
                         >Login
                         </button>
                     </form>
-                </main>
-
             </div>
         );
     }
