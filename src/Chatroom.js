@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import ScrollToBottom from "react-scroll-to-bottom";
 
+import Emoji from 'react-emojione';
+import Linkify from "react-linkify";
+
 class ChatMessage extends Component {
 
     time(milliseconds) {
@@ -9,10 +12,15 @@ class ChatMessage extends Component {
 
     render() {
         //console.log(this.props.message);
+        console.log(this.props.username);
 
         const message = this.props.message;
         let float = "float-left";
-        if (message.isMine === "true") {
+        // alla messeges ska till vänster
+
+        if (message.username === this.props.username) {
+            console.log(message.content);
+            // user messeges to höger
             float = "float-right";
         }
         let className = 'new-content ' + float;
@@ -21,7 +29,11 @@ class ChatMessage extends Component {
             <div className={className}>
                 <p className="show-time">{this.time(message.timestamp)}</p>
                 <h3>{message.username}</h3>
-                <p>{message.content}</p>
+                <p>
+                    <Linkify>
+                        <Emoji>{message.content}</Emoji>
+                    </Linkify>
+                </p>
             </div>
         );
     }
@@ -59,7 +71,7 @@ class ChatWindow extends Component {
                 <ScrollToBottom className='chat-container'>
                     {
                         // loppa igenom alla meddelanden o rendera ett chat-message för varje
-                        this.props.messages.map((item) => <ChatMessage key={item.id} message={item} />
+                        this.props.messages.map((item) => <ChatMessage username={this.props.username} key={item.id} message={item} />
                         )}
                 </ScrollToBottom>
 
@@ -100,10 +112,9 @@ class UserInfo extends Component {
                         className='logOut'
                         onClick={this.props.logoutFunc}
                         value="Logout"
-                        data-test="submit"
                     >Logout
                     </button>
-                    <ChatWindow messages={this.props.messages} sendmessage={this.props.sendmessage} />
+                    <ChatWindow username={this.props.username} messages={this.props.messages} sendmessage={this.props.sendmessage} />
                 </header>
             </div>
         );

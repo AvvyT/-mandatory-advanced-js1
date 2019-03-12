@@ -35,11 +35,10 @@ class Login extends Component {
         return (
             <div className="Login">
                 <header className="text-header">
+
                     <h1 className="page-name">Login</h1>
-                    {this.state.error && <h3 data-test="error"
-                            className='error-text'
-                            onClick={this.dismissError}
-                        >
+                    {this.state.error &&
+                        <h3 className='error-text' onClick={this.dismissError}>
                             {this.state.error}
                             <button
                                 className="myError"
@@ -47,29 +46,26 @@ class Login extends Component {
                             >✖
                             </button>
                         </h3>
-                        }
+                    }
                 </header>
-                
-                    <form className='form-style'
-                    onSubmit={this.handleSubmit}
-                    >
-                        <label
-                        >User Name <input type="text"
-                                placeholder=" Write a username!!"
-                                className="myInput"
-                                data-test="username"
-                                onChange={this.changeInput}
-                            />
-                        </label>
 
-                        <button type="submit"
-                            onChange={this.handleSubmit}
-                            className="myButton"
-                            value="Login"
-                            data-test="submit"
-                        >Login
-                        </button>
-                    </form>
+                <form className='form-style'
+                    onSubmit={this.handleSubmit}
+                >
+                    <label
+                    >User Name <input type="text"
+                        placeholder=" Write a username!!"
+                        className="myInput"
+                        onChange={this.changeInput}
+                        />
+                    </label>
+
+                    <input type="submit"
+                        onChange={this.handleSubmit}
+                        className="myButton"
+                        value="Login"
+                    />
+                </form>
             </div>
         );
     }

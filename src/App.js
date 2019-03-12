@@ -5,14 +5,19 @@ import './App.css';
 import Login from './Login.js';
 import Chatroom from './Chatroom';
 
+let currentId = 0;
+
+function generateNewId() { // ge en unic id till my-message
+  const rv = `my-message-${currentId}`;
+  currentId += 1;
+  return rv;
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      inlogat: false, username: '', messages: [{
-        time: 0, message: 'test', username: 'user1'
-      }]
-    };
+
+    this.state = { inlogat: false, username: '', messages: [] };
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -23,15 +28,15 @@ class App extends Component {
     // Connect to the server
     this.server = io("http://ec2-13-53-66-202.eu-north-1.compute.amazonaws.com:3000");
 
+    //  a list of all messages on the server
     this.server.on("messages", data => {
       for (let message of data) {
-        // om meddelandet är ifrån samma namn som jag loggat in med (mig själv)
-        if (message.username === this.state.username) {
-          message.isMine = "true"
-        }
+
         this.addMessage(message);
       }
     });
+
+    // new message is sent to the server
     this.server.on("new_message", data => {
       this.addMessage(data);
     });
@@ -44,9 +49,12 @@ class App extends Component {
   sendMessage(text) {
     const message = { username: this.state.username, content: text };
 
+    // skicka iväg meddelandet till servern/user messenges
     this.server.emit("message", message);
     message.timestamp = Date.now();
-    message.isMine = "true"
+    message.isMine = "true";
+    message.id = generateNewId();
+    // lägga mitt meddelande till alla
     this.addMessage(message);
   }
 
