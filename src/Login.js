@@ -4,7 +4,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { error: '' };
+        this.state = { error: '', validName: true };
+
         this.changeInput = this.changeInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.dismissError = this.dismissError.bind(this);
@@ -17,13 +18,21 @@ class Login extends Component {
     handleSubmit(evt) {
         //alert('A name was submitted: ' + this.state.username);
         evt.preventDefault();
+        const regex = /^[\s\wÅÄÖåäö-]+$/;
+
 
         if (!this.state.username) {
-            return this.setState({ error: '!! Username is required' });
+            return this.setState({ error: '!! Username is required!' });
         }
 
-        if (this.state.username) {
+        // check if username is valid
+        if (regex.test(this.state.username)) {
+            this.setState({ validName: true });
+            console.log("regex funkar");
+
             this.props.loginFunc(this.state.username);
+        } else {
+            this.setState({ validName: false });
         }
     }
 
@@ -35,17 +44,12 @@ class Login extends Component {
         return (
             <div className="Login">
                 <header className="text-header">
-
                     <h1 className="page-name">Login</h1>
-                    {this.state.error &&
-                        <h3 className='error-text' onClick={this.dismissError}>
+
+                    {
+                        this.state.error && <h3 className='error-text' onClick={this.dismissError}>
                             {this.state.error}
-                            <button
-                                className="myError"
-                                onClick={this.dismissError}
-                            >✖
-                            </button>
-                        </h3>
+                            <button className="myError" onClick={this.dismissError}>✖</button></h3>
                     }
                 </header>
 
@@ -54,6 +58,8 @@ class Login extends Component {
                 >
                     <label
                     >User Name <input type="text"
+                        minLength={1}
+                        maxLength={12}
                         placeholder=" Write a username!!"
                         className="myInput"
                         onChange={this.changeInput}
@@ -65,6 +71,12 @@ class Login extends Component {
                         className="myButton"
                         value="Login"
                     />
+
+                    {!this.state.validName ? (<p className="invalid-username">
+                        !!Your name must be between 1-12 characters
+                        and can contain only letters, numbers, spaces and symbols('-' '_')!!
+                           </p>
+                    ) : null}
                 </form>
             </div>
         );

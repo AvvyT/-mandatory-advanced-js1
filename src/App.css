@@ -1,14 +1,14 @@
 .App {
   text-align: center;
   position: relative;
-  font-family:serif;
-  background: url("/djup-rymd-farger.jpg") no-repeat; 
+  font-family: serif;
+  background: url("/djup-rymd-farger.jpg") no-repeat;
   min-height: calc(100vh);
   background-size: cover;
 }
 
-.side-color{
-  background-color:rgba(193, 122, 235, 0.644);
+.side-color {
+  background-color: rgba(193, 122, 235, 0.644);
   margin: 0;
   height: 55px;
   display: flex;
@@ -26,9 +26,8 @@
   color: white;
 }
 
-form{
+.form-style {
   width: 100%;
-  display: flex;
 }
 
 .myButton {
@@ -39,40 +38,42 @@ form{
   border-radius: 7px;
 }
 
-.myError{
- color: #ca1552;
- margin-left: 8px;
- font-size: 18px;
- border-radius: 50%;
+.invalid-username {
+  font-size: 1.17em;
+  font-weight: bold;
+  display: block;
 }
 
-.form-style{
-  position: relative;
+.myError {
+  color: #ca1552;
+  margin-left: 8px;
+  font-size: 18px;
+  border-radius: 50%;
 }
 
-.myInput{
+.myInput {
   border-radius: 2px;
   font-size: 20px;
   height: 35px;
   outline: none;
 }
 
-.logOut{
+.logOut {
   position: absolute;
   right: 5px;
   top: 5px;
   font-size: 25px;
-  color:#8e5996;
+  color: #8e5996;
   border-radius: 8px;
 }
 
-.chatRoom{
-  background: url("/3D Vesmir.png"); 
+.chatRoom {
+  background: url("/3D Vesmir.png");
   min-height: calc(100vh);
   background-size: 100%;
 }
 
-.chat-header{
+.chat-header {
   position: relative;
   width: 600px;
   min-height: calc(80vh);
@@ -84,27 +85,27 @@ form{
   background-color: rgba(255, 255, 255, 0.961);
 }
 
-.chat-container{
+.chat-container {
   width: 100%;
   height: 400px;
 }
 
-.color-head{
+.color-head {
   background-color: rgba(205, 162, 229, 0.931);
   margin: 0;
   font-size: 24px;
-  font-family:serif;
+  font-family: serif;
   color: white;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 7px; 
+  border-radius: 7px;
 }
 
-.send-message{
+.send-message {
   font-size: 25px;
-  color:#8e5996;
+  color: #8e5996;
   border-radius: 8px;
   margin: 7px;
   width: 90px;
@@ -112,22 +113,22 @@ form{
   outline: none;
 }
 
-.text{
-  margin:0;
+.text {
+  margin: 0;
   color: white;
   font-family: fantasy;
   font-size: 27px;
 }
 
-.send-container{
-position: absolute;
-background-color: rgba(205, 162, 229, 0.931);
-bottom: 0;
-margin: 7px;
-border-radius: 5px;
+.send-container {
+  position: absolute;
+  background-color: rgba(205, 162, 229, 0.931);
+  bottom: 0;
+  margin: 7px;
+  border-radius: 5px;
 }
 
-.message-input{
+.message-input {
   margin-top: 7px;
   border-radius: 2px;
   font-size: 20px;
@@ -136,7 +137,7 @@ border-radius: 5px;
   outline: none;
 }
 
-.new-content{
+.new-content {
   background-color: #b167be;
   border-radius: 7px;
   width: 300px;
@@ -144,16 +145,16 @@ border-radius: 5px;
   padding: 4px;
 }
 
-.new-content p{
+.new-content p {
   word-break: break-all;
 }
 
-.float-left{
+.float-left {
   float: left;
 }
 
-.float-right{
+.float-right {
   background-color: white;
   border: 2px solid #b167be;
-  float:right;
+  float: right;
 }

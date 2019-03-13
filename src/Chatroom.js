@@ -12,7 +12,7 @@ class ChatMessage extends Component {
 
     render() {
         //console.log(this.props.message);
-        console.log(this.props.username);
+        //console.log(this.props.username);
 
         const message = this.props.message;
         let float = "float-left";
